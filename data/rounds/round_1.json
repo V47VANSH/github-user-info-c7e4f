@@ -5,5 +5,5 @@
     "Page has an input with id '#username-input' and a button with id '#fetch-btn'",
     "After entering 'octocat' and clicking the button, '#creation-date' contains '2011-01-25'"
   ],
-  "attachments": {}
+  "attachments": []
 }
