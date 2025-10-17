@@ -1,37 +1,47 @@
 # github-user-info-c7e4f
 
 ## Brief Description
-A simple web application that allows users to input a GitHub username and fetch the account's creation date from the GitHub API. The creation date is then displayed on the page for easy viewing.
-
-## Features
-- Input field for entering a GitHub username (`#username-input`)
-- "Fetch" button (`#fetch-btn`) to trigger the API request
-- Fetches user data from `https://api.github.com/users/{username}`
-- Displays the account creation date (`created_at`) in an element with the ID `#creation-date`
-- Basic, user-friendly interface
-
-## Setup Instructions
-This project is a static web page and does not require any setup or dependencies.
-
-To run the application:
-1. Clone or download this repository.
-2. Open the `index.html` file in your preferred web browser.
-
-## Usage Guide
-1. Enter a GitHub username into the input field (`#username-input`).
-2. Click the "Fetch" button (`#fetch-btn`).
-3. The application will retrieve the user data from GitHub's API.
-4. The account's creation date will be displayed below or beside the input, in the element with ID `#creation-date`.
-
-## Technical Details
-- Uses vanilla JavaScript to handle user interactions and fetch data.
-- Sends an HTTP GET request to `https://api.github.com/users/{username}`.
-- Parses the JSON response to extract the `created_at` field.
-- Updates the DOM to display the creation date.
-
-## License
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+A simple web application that allows users to input a GitHub username and retrieve the account's creation date. When users enter a username and click the "Fetch" button, the app fetches data from the GitHub API and displays the account creation date on the page.
 
 ---
 
-*Enjoy exploring GitHub user data with this simple tool!*
+## Features
+- Input field to enter a GitHub username (`#username-input`)
+- "Fetch" button (`#fetch-btn`) to trigger data retrieval
+- Fetches user data from GitHub API (`https://api.github.com/users/{username}`)
+- Displays the account creation date (`#creation-date`)
+- Basic error handling for invalid usernames or failed requests
+
+---
+
+## Setup Instructions
+This project is a static web page that requires no special setup or dependencies.
+
+1. Clone or download the project files.
+2. Open the `index.html` file in your preferred web browser.
+
+---
+
+## Usage Guide
+1. Enter a GitHub username into the input field with the ID `#username-input`.
+2. Click the "Fetch" button with the ID `#fetch-btn`.
+3. The page will fetch the user data from GitHub API.
+4. The GitHub account's creation date will be displayed in the element with ID `#creation-date`.
+5. If the username is invalid or the fetch fails, an error message will be shown in the console or on the page.
+
+---
+
+## Technical Details
+- The app is built with plain HTML, CSS, and JavaScript.
+- Uses the `fetch` API to retrieve data from GitHub.
+- Minimal DOM manipulation to update the display.
+- Error handling for network errors and invalid usernames.
+
+---
+
+## License
+This project is licensed under the MIT License. See the [`LICENSE`](LICENSE) file for details.
+
+---
+
+Feel free to customize and extend this project as needed!
