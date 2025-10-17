@@ -1,0 +1,9 @@
+{
+  "round": 2,
+  "brief": "Update the GitHub user page. Add a status element with id '#api-status'. It should display 'Loading...' during the API fetch. If the fetch is successful, it should be empty. If the fetch fails (e.g., for a non-existent user), it should display 'User not found'.",
+  "checks": [
+    "When fetching user 'octocat', '#api-status' shows 'Loading...' and then becomes empty.",
+    "When fetching a user that does not exist like 'nonexistentuser123456789', '#api-status' displays 'User not found'."
+  ],
+  "attachments": {}
+}
