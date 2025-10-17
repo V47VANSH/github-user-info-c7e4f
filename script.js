@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fetchBtn = document.getElementById('fetch-btn');
     const usernameInput = document.getElementById('username-input');
     const creationDateElem = document.getElementById('creation-date');
+    const apiStatusElem = document.getElementById('api-status');
 
     // Function to fetch user data from GitHub API
     async function fetchUserData(username) {
@@ -25,26 +26,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const username = usernameInput.value.trim();
         if (username === '') {
             creationDateElem.textContent = 'N/A';
+            apiStatusElem.textContent = '';
             return;
         }
+
+        apiStatusElem.textContent = 'Loading...';
+        creationDateElem.textContent = 'N/A';
+
         const userData = await fetchUserData(username);
+
         if (userData && userData.created_at) {
+            // Fetch successful: clear status
+            apiStatusElem.textContent = '';
             // The created_at is in ISO 8601 format, e.g., '2011-01-25T18:44:24Z'
             // We need only the date part 'YYYY-MM-DD'
             const createdAt = userData.created_at;
             const datePart = createdAt.substring(0, 10);
-            // Check if date matches '2011-01-25'
-            if (datePart === '2011-01-25') {
-                creationDateElem.textContent = datePart;
-            } else {
-                // If date does not match, still display the date
-                creationDateElem.textContent = datePart;
-            }
+            creationDateElem.textContent = datePart;
         } else {
+            // Fetch failed: show user not found
+            apiStatusElem.textContent = 'User not found';
             creationDateElem.textContent = 'N/A';
         }
     }
 
     // Attach event listener to button
-    document.getElementById('fetch-btn').addEventListener('click', handleFetch);
+    fetchBtn.addEventListener('click', handleFetch);
 });
