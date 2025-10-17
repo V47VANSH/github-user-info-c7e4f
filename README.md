@@ -1,15 +1,17 @@
 # github-user-info-c7e4f
 
-A simple web application to fetch and display the account creation date for any GitHub user. Enter a GitHub username, click a button, and instantly see when their account was created.
+A simple web application that displays GitHub user information, enhanced with real-time status updates for API requests. The app improves user experience by showing loading and error indicators during data fetching.
 
 ---
 
 ## Features
 
-- **User-friendly interface:** Input field and button for easy interaction.
-- **Live data fetch:** Retrieves user information directly from the [GitHub Users API](https://api.github.com/users).
-- **Instant results:** Displays the user's account creation date.
-- **Error handling:** Informs users of invalid usernames or fetch errors.
+- **User Lookup:** Enter a GitHub username to fetch and display user details.
+- **API Status Indicator:**  
+  - Shows `Loading...` while fetching data.
+  - Clears the status on successful fetch.
+  - Displays `User not found` if the user does not exist or fetch fails.
+- **Responsive UI:** Clean, minimal interface for quick interactions.
 
 ---
 
@@ -17,45 +19,39 @@ A simple web application to fetch and display the account creation date for any 
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/github-user-info-c7e4f.git
+   git clone https://github.com/yourusername/github-user-info-c7e4f.git
+   ```
+2. **Navigate to the project folder:**
+   ```bash
    cd github-user-info-c7e4f
    ```
-2. **Open the app:**
-   - Simply open `index.html` in your web browser.
-   - No additional dependencies or build steps required.
+3. **Open `index.html` in your browser**  
+   No build or install steps required—this is a pure frontend web app.
 
 ---
 
 ## Usage Guide
 
-1. In your browser, you will see an input field labeled **Username**.
-2. Enter a GitHub username into the input field (`#username-input`).
-3. Click the **Fetch User Info** button (`#fetch-btn`).
-4. The account creation date will appear in the designated area (`#creation-date`).
-
-**Example:**
-```
-Username: octocat   [Fetch User Info]
-Created At: 2011-01-25T18:44:36Z
-```
-
-If the username does not exist, an error message will be displayed.
+1. Open `index.html` in your preferred web browser.
+2. Enter a valid GitHub username in the input field.
+3. Click the "Search" button (or similar UI control).
+4. Observe the **Status Element** (`#api-status`):
+    - Displays `Loading...` while fetching.
+    - Clears on success, showing the user info.
+    - Shows `User not found` on error or if the username does not exist.
 
 ---
 
 ## Technical Details
 
-- **Frontend:** HTML, CSS, JavaScript (Vanilla)
-- **API Used:** [GitHub Users API](https://api.github.com/users/{username})
-- **Key Elements:**
-  - Input field: `#username-input`
-  - Fetch button: `#fetch-btn`
-  - Display area: `#creation-date`
-- **Process:**
-  1. User enters a username and clicks the button.
-  2. A GET request is sent to `https://api.github.com/users/{username}`.
-  3. On success, the user's `created_at` date is shown.
-  4. On failure, an error message is shown.
+- **Frontend:** HTML, CSS, and JavaScript (vanilla)
+- **API:** [GitHub Users API](https://api.github.com/users/{username})
+- **Status Element:**  
+  - HTML element with `id="api-status"`  
+  - Dynamically updated via JavaScript to reflect API fetch state.
+- **Error Handling:**  
+  - Catches network errors and invalid usernames.
+  - Updates the status element accordingly.
 
 ---
 
@@ -65,4 +61,4 @@ MIT License
 
 ---
 
-Feel free to use, modify, and share this project under the terms of the MIT license. See [LICENSE](LICENSE) for details.
+**Feel free to contribute or customize. For any issues, please open an issue or submit a pull request.**
