@@ -1,0 +1,9 @@
+{
+  "round": 1,
+  "brief": "Create a page with an input field ('#username-input') and a button ('#fetch-btn'). When the button is clicked, fetch user data from 'https://api.github.com/users/{username}' and display the 'created_at' date in an element with id '#creation-date'.",
+  "checks": [
+    "Page has an input with id '#username-input' and a button with id '#fetch-btn'",
+    "After entering 'octocat' and clicking the button, '#creation-date' contains '2011-01-25'"
+  ],
+  "attachments": {}
+}
