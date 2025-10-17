@@ -27,16 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}`);
             if (!res.ok) {
-                if (res.status === 404) {
-                    // User not found
-                    apiStatusElem.textContent = 'User not found';
-                    creationDateElem.textContent = 'N/A';
-                    return;
-                } else {
-                    apiStatusElem.textContent = 'User not found';
-                    creationDateElem.textContent = 'N/A';
-                    return;
-                }
+                // For any error (including 404), show 'User not found'
+                apiStatusElem.textContent = 'User not found';
+                creationDateElem.textContent = 'N/A';
+                return;
             }
             const data = await res.json();
             if (data.created_at) {
