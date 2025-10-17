@@ -51,3 +51,8 @@ h1 {
     font-size: 1.2em;
     margin-top: 8px;
 }
+#api-status {
+    margin-top: 12px;
+    font-style: italic;
+    color: #d00;
+}
