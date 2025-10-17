@@ -1,47 +1,68 @@
+```markdown
 # github-user-info-c7e4f
 
-## Brief Description
-A simple web application that allows users to input a GitHub username and retrieve the account's creation date. When users enter a username and click the "Fetch" button, the app fetches data from the GitHub API and displays the account creation date on the page.
+A simple web application to update the GitHub user page by adding a status element that reflects the API fetch state.
+
+## Project Overview
+
+This project enhances the GitHub user information page by introducing a status indicator element with the ID `#api-status`. The status element dynamically displays:
+
+- **Loading...** while fetching user data from the GitHub API
+- An **empty** status on successful fetch
+- **User not found** if the requested user does not exist or the fetch fails
 
 ---
 
 ## Features
-- Input field to enter a GitHub username (`#username-input`)
-- "Fetch" button (`#fetch-btn`) to trigger data retrieval
-- Fetches user data from GitHub API (`https://api.github.com/users/{username}`)
-- Displays the account creation date (`#creation-date`)
-- Basic error handling for invalid usernames or failed requests
+
+- **Real-time API status indicator** to improve user feedback during data loading
+- Handles successful and failed API fetch scenarios gracefully
+- Simple and clear status messages
+- Non-intrusive UI update by manipulating the status element content dynamically
 
 ---
 
 ## Setup Instructions
-This project is a static web page that requires no special setup or dependencies.
 
-1. Clone or download the project files.
-2. Open the `index.html` file in your preferred web browser.
+This project is a front-end enhancement and does not require any special setup or backend server.
+
+1. Clone or download the repository.
+2. Open the main HTML file (`index.html` or your specific page) in a modern web browser.
+3. Ensure the JavaScript responsible for fetching GitHub user data and updating the `#api-status` element is included and properly linked.
 
 ---
 
 ## Usage Guide
-1. Enter a GitHub username into the input field with the ID `#username-input`.
-2. Click the "Fetch" button with the ID `#fetch-btn`.
-3. The page will fetch the user data from GitHub API.
-4. The GitHub account's creation date will be displayed in the element with ID `#creation-date`.
-5. If the username is invalid or the fetch fails, an error message will be shown in the console or on the page.
+
+1. Open the GitHub user page or the corresponding webpage where this script is implemented.
+2. When you initiate a fetch request for a GitHub user:
+   - The status element with ID `#api-status` will display `Loading...`.
+3. After the fetch operation:
+   - If the user exists, the status element will be cleared (empty).
+   - If the user does not exist or the fetch fails, the status element will display `User not found`.
+
+### Example
+
+```html
+<div id="api-status"></div>
+<script src="fetchUser.js"></script>
+```
 
 ---
 
 ## Technical Details
-- The app is built with plain HTML, CSS, and JavaScript.
-- Uses the `fetch` API to retrieve data from GitHub.
-- Minimal DOM manipulation to update the display.
-- Error handling for network errors and invalid usernames.
+
+- **Status Element:** An HTML element with the ID `api-status` is used to display the current state of the API request.
+- **API Fetch Handling:**
+  - The status element is set to `"Loading..."` immediately before the fetch call.
+  - On a successful API response, the status text is cleared.
+  - On an unsuccessful fetch (e.g., HTTP 404), the status text is set to `"User not found"`.
+- **Error Handling:** The fetch request includes error catching to handle network issues or invalid usernames gracefully.
+- **Compatibility:** Compatible with modern browsers supporting Fetch API and standard DOM manipulation.
 
 ---
 
 ## License
-This project is licensed under the MIT License. See the [`LICENSE`](LICENSE) file for details.
 
----
-
-Feel free to customize and extend this project as needed!
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+```
