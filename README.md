@@ -1,74 +1,51 @@
 # github-user-info-c7e4f
 
-A simple web application that displays GitHub user information with real-time status feedback. The page features an API status indicator that informs users when data is loading, successfully fetched, or if the user is not found.
+A simple web application to display GitHub user information with dynamic status updates. The app updates the user page by adding a status element that informs users about the progress and result of the API request.
 
 ---
 
 ## Features
 
-- **Status Indicator:**  
-  Displays API request status in a dedicated element (`#api-status`):
+- **Displays GitHub user information** by fetching data from the GitHub API.
+- **Status indicator** (`#api-status`):
   - Shows `Loading...` while fetching data.
-  - Clears the message on success.
-  - Displays `User not found` if the user does not exist or fetch fails.
-- **GitHub User Lookup:**  
-  Retrieves and displays public information for a specified GitHub username.
-- **Responsive UI:**  
-  Provides instant visual feedback for a better user experience.
+  - Clears the status if the user is found.
+  - Displays `User not found` if the user does not exist or the fetch fails.
 
 ---
 
 ## Setup Instructions
 
-1. **Clone the Repository**
-    ```bash
-    git clone https://github.com/your-username/github-user-info-c7e4f.git
-    cd github-user-info-c7e4f
-    ```
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/github-user-info-c7e4f.git
+   cd github-user-info-c7e4f
+   ```
 
-2. **Install Dependencies**  
-    This project uses only HTML, CSS, and JavaScript and does **not** require any package installations.
+2. **Open the application**
+   - Open `index.html` in your preferred web browser.
 
-3. **Run the Application**  
-    Open `index.html` directly in your web browser:
-    ```bash
-    open index.html
-    ```
-    Or use a local server (recommended for some browsers):
-    ```bash
-    npx serve .
-    ```
+   > **Note:** No build steps or dependencies are required—this is a purely frontend app.
 
 ---
 
 ## Usage Guide
 
-1. **Enter GitHub Username:**  
-   Input a GitHub username in the provided field.
-
-2. **View Status:**  
-   - The status element (`#api-status`) will show:
-     - `Loading...` during the fetch.
-     - Empty if fetch is successful.
-     - `User not found` if the user does not exist.
-
-3. **See User Info:**  
-   The user’s public GitHub details (e.g., avatar, name, bio) will be displayed upon successful fetch.
+1. **Enter a GitHub username** in the provided input field (if available).
+2. **Submit** the form or trigger the fetch action.
+3. The application will:
+   - Display `Loading...` in the status area.
+   - Show user information if the user exists.
+   - Display `User not found` in the status area if the username is invalid or does not exist.
 
 ---
 
 ## Technical Details
 
 - **Frontend:** HTML, CSS, JavaScript (Vanilla)
-- **API:** [GitHub Users API](https://api.github.com/users/{username})
-- **Status Element:**  
-  - DOM element with `id="api-status"`
-  - Status managed via JavaScript:
-    - Set to `Loading...` before fetch
-    - Cleared on success
-    - Set to `User not found` on error (e.g., 404 response)
-- **Error Handling:**  
-  Gracefully handles network errors and non-existent users.
+- **GitHub API:** [https://api.github.com/users/{username}](https://api.github.com/users/{username})
+- **Status Element:** An HTML element with `id="api-status"` is used for status updates.
+- **Error Handling:** Gracefully handles non-existent users or network errors with clear status messages.
 
 ---
 
@@ -78,4 +55,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-**Feel free to contribute or suggest improvements!**
+Feel free to contribute or open issues for suggestions and improvements!
