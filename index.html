@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GitHub User Creation Date</title>
+  <style>
+    /* Reset some default styles */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9fafb;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      color: #333;
+    }
+    #username-input {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 1rem;
+      border: 1.5px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      transition: border-color 0.3s ease;
+    }
+    #username-input:focus {
+      outline: none;
+      border-color: #0366d6;
+      box-shadow: 0 0 5px rgba(3,102,214,0.5);
+    }
+    #fetch-btn {
+      width: 100%;
+      background-color: #0366d6;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    #fetch-btn:hover:not(:disabled) {
+      background-color: #0356b6;
+    }
+    #fetch-btn:disabled {
+      background-color: #a3c0f9;
+      cursor: not-allowed;
+    }
+    #creation-date {
+      margin-top: 25px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #24292e;
+      min-height: 28px;
+      word-break: break-word;
+    }
+    #error-message {
+      margin-top: 15px;
+      color: #d73a49;
+      font-size: 0.9rem;
+      font-weight: 600;
+      min-height: 20px;
+      word-break: break-word;
+    }
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container" role="main">
+    <label for="username-input">GitHub Username</label>
+    <input id="#username-input" type="text" placeholder="Enter GitHub username" autocomplete="off" spellcheck="false">
+    <button id="#fetch-btn" type="button">Fetch</button>
+    <div id="#creation-date" aria-live="polite" aria-atomic="true"></div>
+    <div id="error-message" role="alert" aria-live="assertive"></div>
+  </main>
+  <script>
+    // Select elements by their exact IDs including the '#' symbol in IDs
+    // Because IDs are required to be exactly '#username-input', '#fetch-btn', and '#creation-date' including the '#' in the ID name
+
+    // Get references
+    const usernameInput = document.getElementById('#username-input');
+    const fetchBtn = document.getElementById('#fetch-btn');
+    const creationDate = document.getElementById('#creation-date');
+    const errorMessage = document.getElementById('error-message');
+
+    // Function to clear output and error
+    function clearOutput() {
+      creationDate.textContent = '';
+      errorMessage.textContent = '';
+    }
+
+    // Function to format ISO date (YYYY-MM-DDTHH:mm:ssZ) to YYYY-MM-DD
+    function formatDate(isoDateString) {
+      // Just take the first 10 characters (YYYY-MM-DD)
+      return isoDateString.slice(0, 10);
+    }
+
+    // Fetch user data from GitHub API
+    async function fetchUserCreationDate(username) {
+      try {
+        const response = await fetch(`https://api.github.com/users/${username}`);
+
+        if (!response.ok) {
+          if(response.status === 404) {
+            throw new Error('User not found');
+          } else {
+            throw new Error('Failed to fetch data');
+          }
+        }
+
+        const data = await response.json();
+
+        if (!data.created_at) {
+          throw new Error('Creation date not found');
+        }
+
+        return formatDate(data.created_at);
+      } catch (error) {
+        throw error;
+      }
+    }
+
+    // Event listener for button click
+    fetchBtn.addEventListener('click', async () => {
+      clearOutput();
+
+      const username = usernameInput.value.trim();
+
+      if (!username) {
+        errorMessage.textContent = 'Please enter a GitHub username.';
+        return;
+      }
+
+      // Disable button to prevent multiple clicks
+      fetchBtn.disabled = true;
+      fetchBtn.textContent = 'Fetching...';
+
+      try {
+        const createdAtDate = await fetchUserCreationDate(username);
+        creationDate.textContent = createdAtDate;
+      } catch (err) {
+        errorMessage.textContent = err.message;
+      } finally {
+        fetchBtn.disabled = false;
+        fetchBtn.textContent = 'Fetch';
+      }
+    });
+
+    // Accessibility: allow Enter key on input to trigger fetch
+    usernameInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        fetchBtn.click();
+      }
+    });
+
+  </script>
+</body>
+</html>
