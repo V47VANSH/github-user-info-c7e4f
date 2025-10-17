@@ -11,90 +11,83 @@
     }
     body {
       font-family: Arial, sans-serif;
-      background-color: #f9fafb;
       margin: 0;
-      padding: 20px;
+      padding: 2rem;
+      background-color: #f9f9f9;
+      color: #333;
       display: flex;
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
     }
     .container {
-      background-color: white;
-      padding: 30px 40px;
+      background: white;
+      padding: 2rem;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       max-width: 400px;
       width: 100%;
     }
     label {
-      font-weight: 600;
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
       font-size: 1rem;
-      color: #333;
     }
     #username-input {
       width: 100%;
-      padding: 10px 12px;
+      padding: 0.5rem;
       font-size: 1rem;
-      border: 1.5px solid #ccc;
+      border: 1px solid #ccc;
       border-radius: 4px;
-      margin-bottom: 20px;
+      margin-bottom: 1rem;
       transition: border-color 0.3s ease;
     }
     #username-input:focus {
       outline: none;
-      border-color: #0366d6;
-      box-shadow: 0 0 5px rgba(3,102,214,0.5);
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0,123,255,0.5);
     }
     #fetch-btn {
-      width: 100%;
-      background-color: #0366d6;
-      color: white;
-      border: none;
-      padding: 12px;
+      display: inline-block;
+      padding: 0.5rem 1rem;
       font-size: 1rem;
+      color: white;
+      background-color: #007bff;
+      border: none;
       border-radius: 4px;
       cursor: pointer;
-      font-weight: 600;
       transition: background-color 0.3s ease;
     }
     #fetch-btn:hover:not(:disabled) {
-      background-color: #0356b6;
+      background-color: #0056b3;
     }
     #fetch-btn:disabled {
-      background-color: #a3c0f9;
+      background-color: #a3c1f7;
       cursor: not-allowed;
     }
     #creation-date {
-      margin-top: 25px;
+      margin-top: 1.5rem;
       font-size: 1.1rem;
       font-weight: 600;
-      color: #24292e;
-      min-height: 28px;
+      min-height: 1.2em;
+      color: #222;
       word-break: break-word;
     }
-    #error-message {
-      margin-top: 15px;
-      color: #d73a49;
-      font-size: 0.9rem;
+    .error {
+      color: #d93025;
+      margin-top: 1rem;
       font-weight: 600;
-      min-height: 20px;
-      word-break: break-word;
-    }
-    #api-status {
-      margin-top: 15px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #555;
-      min-height: 20px;
-      word-break: break-word;
-      font-style: italic;
     }
     @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
       .container {
-        padding: 20px;
+        padding: 1rem;
+      }
+      #fetch-btn {
+        width: 100%;
       }
     }
   </style>
@@ -102,102 +95,81 @@
 <body>
   <main class="container" role="main">
     <label for="username-input">GitHub Username</label>
-    <input id="#username-input" type="text" placeholder="Enter GitHub username" autocomplete="off" spellcheck="false">
-    <button id="#fetch-btn" type="button">Fetch</button>
-    <div id="#creation-date" aria-live="polite" aria-atomic="true"></div>
-    <div id="api-status" aria-live="polite" aria-atomic="true"></div>
-    <div id="error-message" role="alert" aria-live="assertive"></div>
+    <input type="text" id="username-input" name="username" autocomplete="off" placeholder="Enter GitHub username" aria-describedby="creation-date" />
+    <button id="fetch-btn" type="button">Fetch</button>
+    <div id="creation-date" aria-live="polite" aria-atomic="true"></div>
   </main>
+
   <script>
-    // Select elements by their exact IDs including the '#' symbol in IDs
-    // Because IDs are required to be exactly '#username-input', '#fetch-btn', and '#creation-date' including the '#' in the ID name
+    // Select elements
+    const usernameInput = document.getElementById('username-input');
+    const fetchBtn = document.getElementById('fetch-btn');
+    const creationDateEl = document.getElementById('creation-date');
 
-    // Get references
-    const usernameInput = document.getElementById('#username-input');
-    const fetchBtn = document.getElementById('#fetch-btn');
-    const creationDate = document.getElementById('#creation-date');
-    const errorMessage = document.getElementById('error-message');
-    const apiStatus = document.getElementById('api-status');
+    // Function to fetch GitHub user data and display creation date
+    async function fetchUserCreationDate() {
+      // Clear previous content
+      creationDateEl.textContent = '';
 
-    // Function to clear output and error
-    function clearOutput() {
-      creationDate.textContent = '';
-      errorMessage.textContent = '';
-      apiStatus.textContent = '';
-    }
+      // Get trimmed username value
+      const username = usernameInput.value.trim();
 
-    // Function to format ISO date (YYYY-MM-DDTHH:mm:ssZ) to YYYY-MM-DD
-    function formatDate(isoDateString) {
-      // Just take the first 10 characters (YYYY-MM-DD)
-      return isoDateString.slice(0, 10);
-    }
+      // Validate input
+      if (!username) {
+        creationDateEl.textContent = 'Please enter a username.';
+        creationDateEl.classList.add('error');
+        return;
+      }
 
-    // Fetch user data from GitHub API
-    async function fetchUserCreationDate(username) {
+      // Disable button while fetching
+      fetchBtn.disabled = true;
+      creationDateEl.classList.remove('error');
+      creationDateEl.textContent = 'Loading...';
+
       try {
-        apiStatus.textContent = 'Loading...';
-        const response = await fetch(`https://api.github.com/users/${username}`);
+        // Fetch user data from GitHub API
+        const response = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}`);
 
         if (!response.ok) {
-          if(response.status === 404) {
-            apiStatus.textContent = 'User not found';
-            throw new Error('User not found');
+          // Handle non-OK responses (e.g. 404 not found)
+          if (response.status === 404) {
+            creationDateEl.textContent = 'User not found.';
           } else {
-            apiStatus.textContent = '';
-            throw new Error('Failed to fetch data');
+            creationDateEl.textContent = 'Error fetching user data.';
           }
+          creationDateEl.classList.add('error');
+          return;
         }
 
         const data = await response.json();
 
-        if (!data.created_at) {
-          apiStatus.textContent = '';
-          throw new Error('Creation date not found');
+        // Extract and format created_at date (YYYY-MM-DD)
+        if (data.created_at) {
+          const creationDate = data.created_at.slice(0, 10); // ISO 8601 format, first 10 chars
+          creationDateEl.textContent = creationDate;
+        } else {
+          creationDateEl.textContent = 'Creation date not available.';
+          creationDateEl.classList.add('error');
         }
-
-        apiStatus.textContent = '';
-        return formatDate(data.created_at);
       } catch (error) {
-        if (error.message !== 'User not found') {
-          apiStatus.textContent = '';
-        }
-        throw error;
+        // Handle fetch errors
+        creationDateEl.textContent = 'Network error occurred.';
+        creationDateEl.classList.add('error');
+      } finally {
+        // Re-enable button
+        fetchBtn.disabled = false;
       }
     }
 
-    // Event listener for button click
-    fetchBtn.addEventListener('click', async () => {
-      clearOutput();
+    // Add event listener for button click
+    fetchBtn.addEventListener('click', fetchUserCreationDate);
 
-      const username = usernameInput.value.trim();
-
-      if (!username) {
-        errorMessage.textContent = 'Please enter a GitHub username.';
-        return;
-      }
-
-      // Disable button to prevent multiple clicks
-      fetchBtn.disabled = true;
-      fetchBtn.textContent = 'Fetching...';
-
-      try {
-        const createdAtDate = await fetchUserCreationDate(username);
-        creationDate.textContent = createdAtDate;
-      } catch (err) {
-        errorMessage.textContent = err.message;
-      } finally {
-        fetchBtn.disabled = false;
-        fetchBtn.textContent = 'Fetch';
-      }
-    });
-
-    // Accessibility: allow Enter key on input to trigger fetch
-    usernameInput.addEventListener('keydown', (event) => {
+    // Optional: allow pressing Enter key to trigger fetch
+    usernameInput.addEventListener('keyup', function(event) {
       if (event.key === 'Enter') {
-        fetchBtn.click();
+        fetchUserCreationDate();
       }
     });
-
   </script>
 </body>
 </html>
