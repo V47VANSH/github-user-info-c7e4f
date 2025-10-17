@@ -5,5 +5,5 @@
     "When fetching user 'octocat', '#api-status' shows 'Loading...' and then becomes empty.",
     "When fetching a user that does not exist like 'nonexistentuser123456789', '#api-status' displays 'User not found'."
   ],
-  "attachments": {}
+  "attachments": []
 }
